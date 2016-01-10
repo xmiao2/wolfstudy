@@ -1,13 +1,18 @@
-drop table if exists questions;
-create table questions (
-	id      INTEGER PRIMARY KEY AUTOINCREMENT,
-	title   TEXT NOT NULL,
-	content TEXT NOT NULL
+PRAGMA foreign_keys = on; -- Enforce foreign key constraints
+
+DROP TABLE IF EXISTS questions;
+CREATE TABLE questions (
+    -- id is an alias for ROWID because it is of type INTEGER PRIMARY KEY;
+	-- it auto-increments by default. See SQLite3 documentation.
+	id       INTEGER PRIMARY KEY,
+	title    TEXT NOT NULL,
+	content  TEXT NOT NULL
 );
 
-drop table if exists answers;
-create table answers (
-	id          INTEGER PRIMARY KEY AUTOINCREMENT,
-	question_id INTEGER
-	content
+DROP TABLE IF EXISTS answers;
+CREATE TABLE answers (
+	id           INTEGER PRIMARY KEY,
+	question_id  INTEGER,
+	content      TEXT NOT NULL,
+	FOREIGN KEY(question_id) REFERENCES questions(id)
 );
