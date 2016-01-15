@@ -54,6 +54,13 @@ def db_get_question(question_id):
     cursor.execute('SELECT title, content FROM questions WHERE id == ?', [question_id])
     return cursor.fetchone()
 
+def db_get_all_questions():
+    """Retrieve and return a list of all questions from the database."""
+    cursor = g.db.cursor()
+    cursor.execute('SELECT title, content, id FROM questions')
+    questions = [{'title': row[0], 'content': row[1], 'id': row[2]} for row in cursor.fetchall()]
+    return questions
+
 # +----------+
 # |  ROUTES  |
 # +----------+
@@ -67,7 +74,8 @@ def db_get_question(question_id):
 @app.route('/')
 @app.route('/feed/')
 def feed():
-    return render_template('feed.html')
+    questions = db_get_all_questions()
+    return render_template('feed.html', questions = questions)
 
 @app.route('/question/<int:question_id>/')
 def get_question(question_id):

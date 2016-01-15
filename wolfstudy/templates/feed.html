@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h2>Question feed</h2>
+	<h1>Question feed</h1>
 
-	<p>There will be questions here.</p>
+    {% for question in questions %}
+        <h2>{{ question.title }}</h2>
+
+        <p>{{ question.content }}</p>
+
+        <p><a href="/question/{{ question.id }}">Read more...</a></p>
+
+        <br>
+        <br>
+    {% endfor %}
 {% endblock %}
