@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h2>{{ title }}</h2>
+    <h2>{{ title }}</h2>
 
-	<p>{{ content }}</p>
+    <p>{{ content }}</p>
 
-	<p>Answers will appear here.</p>
+    <hr>
+
+    <h2>Answers:</h2>
+
+    {% for answer in answers %}
+        <p>{{ answer }}</p>
+    {% endfor %}
+
+    <hr>
+
+    <form action="/question/{{ question_id }}/answer/" method="post">
+        <label for="content">Answer this question:</label>
+        <textarea id="content" name="content"></textarea>
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
 {% endblock %}
