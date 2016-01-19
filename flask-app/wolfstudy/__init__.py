@@ -113,5 +113,3 @@ def ask_question():
         new_question_id = db_add_question(request.form['title'], request.form['content'])
         return redirect(url_for('get_question', question_id=new_question_id))
 
-if __name__ == '__main__':
-    app.run()
