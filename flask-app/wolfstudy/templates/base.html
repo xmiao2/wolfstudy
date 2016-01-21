@@ -19,18 +19,19 @@
 
     <body>
         <header>
-            <h1>WolfStudy</h1>
+            <h1 id="logo"><a href="/">WolfStudy</a></h1>
 
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
+                    <li><a href="/feed">Feed</a></li>
                     <li><a href="/ask">Ask</a></li>
+                    <li><a href="/login">Login</a></li>
                 </ul>
             </nav>
         </header>
 
-        <hr>
-
-        {% block content %}{% endblock %}
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
