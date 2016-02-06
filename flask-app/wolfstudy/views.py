@@ -23,7 +23,6 @@ def get_question(question_id):
 def answer_question(question_id):
     db.db_add_answer(question_id, request.form['content'])
     return redirect(url_for('get_question', question_id=question_id))
-    #return 'Posting new answer. question_id: %d, content: %s' % (question_id, request.form['content'])
 
 
 @app.route('/ask/', methods=['GET', 'POST'])
