@@ -1,3 +1,6 @@
 *.pyc
 *.db
+
 flask-app/instance
+flask-app/flask
+assets
