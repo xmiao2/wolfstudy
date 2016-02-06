@@ -23,8 +23,6 @@ def get_question(question_id):
 def answer_question(question_id):
     db.db_add_answer(question_id, request.form['content'])
     return redirect(url_for('get_question', question_id=question_id))
-    #return 'Posting new answer. question_id: %d, content: %s' % (question_id, request.form['content'])
-
 
 @app.route('/ask/', methods=['GET', 'POST'])
 def ask_question():
@@ -34,3 +32,11 @@ def ask_question():
     elif request.method == 'POST':
         new_question_id = db.db_add_question(request.form['title'], request.form['content'])
         return redirect(url_for('get_question', question_id=new_question_id))
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    elif request.method == 'POST':
+        return '/login/ POST handler not yet implemented.'
