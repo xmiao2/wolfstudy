@@ -36,5 +36,11 @@ def db_get_answers(question_id):
     cursor = g.db.cursor()
     cursor.execute('SELECT (content) FROM answers WHERE question_id == ?', [question_id])
     answers = [answer[0] for answer in cursor.fetchall()]
-    print(answers)
     return answers
+
+def db_add_user(username, email, iterations, salt, pass_hash):
+    """Add a user to the database including email, username, hash iterations, salt, and password hash."""
+    cursor = g.db.cursor()
+    cursor.execute('INSERT INTO users (username, email, iterations, salt, pass_hash) VALUES (?, ?, ?, ?, ?)',
+                                      [username, email, iterations, salt, pass_hash])
+    g.db.commit()

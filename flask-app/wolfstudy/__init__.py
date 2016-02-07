@@ -1,7 +1,7 @@
 from contextlib import closing
 from flask import Flask, g
+from wolfstudy import config
 
-import config
 import sqlite3
 
 # Create and configure Flask object

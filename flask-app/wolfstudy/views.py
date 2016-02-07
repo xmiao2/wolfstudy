@@ -1,11 +1,8 @@
 from flask import redirect, render_template, request, url_for
-from wolfstudy import app, db
 
-# /, /feed - GET: question feed
-# /question/<question_id> - GET: question page
-# /question/<question_id>/answer - POST: process answer
-# /ask - GET: ask question page
-# /ask - POST: process new question
+from wolfstudy import app
+import auth
+import db
 
 @app.route('/')
 @app.route('/feed/')
@@ -32,6 +29,24 @@ def ask_question():
     elif request.method == 'POST':
         new_question_id = db.db_add_question(request.form['title'], request.form['content'])
         return redirect(url_for('get_question', question_id=new_question_id))
+
+@app.route('/register/', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+
+    elif request.method == 'POST':
+        # Get email, username, and password from form. Convert from Unicode to UTF-8.
+        email    = request.form['email']
+        username = request.form['username']
+        # The form will submit a UTF-8-encoded password because <meta charset="utf-8"> is used.
+        # auth.register_user() requires that the password is a UTF-8-encoded string.
+        password = request.form['password'].encode('utf-8')
+
+        auth.register_user(email, username, password)
+
+        # Redirect to homepage
+        return redirect(url_for('feed'))
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
