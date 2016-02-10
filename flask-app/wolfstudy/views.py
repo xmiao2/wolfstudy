@@ -42,6 +42,18 @@ def register():
         # The form will submit a UTF-8-encoded password because <meta charset="utf-8"> is used.
         # auth.register_user() requires that the password is a UTF-8-encoded string.
         password = request.form['password'].encode('utf-8')
+        password_retype = request.form['password-retype'].encode('utf-8')
+
+        error = None
+        if db.db_username_exists(username):
+            error = 'Username already in use.'
+        elif db.db_email_exists(email):
+            error = 'Email address already in use.'
+        elif password != password_retype:
+            error = 'The passwords you typed did not match.'
+
+        if error:
+            return render_template('register.html', error=error)
 
         auth.register_user(email, username, password)
 
