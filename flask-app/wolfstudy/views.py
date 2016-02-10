@@ -39,10 +39,8 @@ def register():
         # Get email, username, and password from form. Convert from Unicode to UTF-8.
         email    = request.form['email']
         username = request.form['username']
-        # The form will submit a UTF-8-encoded password because <meta charset="utf-8"> is used.
-        # auth.register_user() requires that the password is a UTF-8-encoded string.
-        password = request.form['password'].encode('utf-8')
-        password_retype = request.form['password-retype'].encode('utf-8')
+        password = request.form['password']
+        password_retype = request.form['password-retype']
 
         error = None
         if db.db_username_exists(username):
@@ -66,4 +64,11 @@ def login():
         return render_template('login.html')
 
     elif request.method == 'POST':
-        return '/login/ POST handler not yet implemented.'
+        username = request.form['username']
+        password = request.form['password']
+
+        if not auth.is_valid_login(username, password):
+            error = 'Login failed. Please try again.'
+            return render_template('login.html', error=error)
+
+        return redirect(url_for('feed'))

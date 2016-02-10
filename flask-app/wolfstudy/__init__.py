@@ -24,6 +24,7 @@ def init_db():
 def before_request():
     # Open a connection to the database and store it in g.
     g.db = connect_db()
+    g.cursor = g.db.cursor()
 
 @app.teardown_request
 def teardown_request(exception):
