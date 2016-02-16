@@ -55,6 +55,8 @@ def register():
 
         auth.register_user(email, username, password)
 
+        session['username'] = username
+
         # Redirect to homepage
         return redirect(url_for('feed'))
 
@@ -70,5 +72,7 @@ def login():
         if not auth.is_valid_login(username, password):
             error = 'Login failed. Please try again.'
             return render_template('login.html', error=error)
+
+        session['username'] = username
 
         return redirect(url_for('feed'))

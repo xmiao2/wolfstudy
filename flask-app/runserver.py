@@ -24,4 +24,4 @@ def install_secret_key(app, filename='secret_key'):
 
 install_secret_key(app)
 
-app.run(debug=True)
+app.run()
