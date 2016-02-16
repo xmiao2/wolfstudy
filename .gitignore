@@ -1,2 +1,5 @@
 *.pyc
 *.db
+
+flask-app/instance
+assets

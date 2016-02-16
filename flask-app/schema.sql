@@ -14,5 +14,15 @@ CREATE TABLE answers (
     id           INTEGER PRIMARY KEY,
     question_id  INTEGER,
     content      TEXT NOT NULL,
+
     FOREIGN KEY(question_id) REFERENCES questions(id)
+);
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    username    TEXT PRIMARY KEY NOT NULL,
+    email       TEXT UNIQUE NOT NULL,
+    iterations  INTEGER NOT NULL,
+    salt        TEXT NOT NULL,
+    pass_hash   TEXT NOT NULL
 );
