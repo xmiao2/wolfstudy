@@ -1,14 +1,13 @@
-from flask import redirect, render_template, request, session, url_for
+from flask import abort, flash, redirect, render_template, request, session, url_for
 
 from wolfstudy import app
 import auth
 import db
 
 @app.route('/')
-@app.route('/feed/')
-def feed():
+def index():
     questions = db.db_get_all_questions()
-    return render_template('feed.html', questions=questions)
+    return render_template('index.html', questions=questions)
 
 @app.route('/question/<int:question_id>/')
 def get_question(question_id):
@@ -18,11 +17,19 @@ def get_question(question_id):
 
 @app.route('/question/<int:question_id>/answer/', methods=['POST'])
 def answer_question(question_id):
+    if not session['logged_in']:
+        flash('You must be logged in to answer a question.')
+        return redirect(url_for('login'))
+
     db.db_add_answer(question_id, request.form['content'])
     return redirect(url_for('get_question', question_id=question_id))
 
 @app.route('/ask/', methods=['GET', 'POST'])
 def ask_question():
+    if not session['logged_in']:
+        flash('You must be logged in to ask a question.')
+        return redirect(url_for('login'))
+
     if request.method == 'GET':
         return render_template('ask.html')
 
@@ -36,7 +43,6 @@ def register():
         return render_template('register.html')
 
     elif request.method == 'POST':
-        # Get email, username, and password from form. Convert from Unicode to UTF-8.
         email    = request.form['email']
         username = request.form['username']
         password = request.form['password']
@@ -55,10 +61,10 @@ def register():
 
         auth.register_user(email, username, password)
 
+        session['logged_in'] = True
         session['username'] = username
 
-        # Redirect to homepage
-        return redirect(url_for('feed'))
+        return redirect(url_for('index'))
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -73,6 +79,24 @@ def login():
             error = 'Login failed. Please try again.'
             return render_template('login.html', error=error)
 
+        session['logged_in'] = True
         session['username'] = username
 
-        return redirect(url_for('feed'))
+        return redirect(url_for('index'))
+
+@app.route('/logout/')
+def logout():
+    session['logged_in'] = False
+    session.pop('username')
+
+    return redirect(url_for('index'))
+
+@app.route('/user/<username>')
+def show_user(username):
+    if not db.db_username_exists(username):
+        abort(404)
+
+    email = db.db_get_user_email(username)
+    id = db.db_get_user_id(username)
+
+    return render_template('user.html', username=username, email=email, id=id)

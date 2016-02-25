@@ -60,6 +60,14 @@ def db_username_exists(username):
     g.cursor.execute('SELECT (username) FROM users WHERE username == ? LIMIT 1', [username])
     return g.cursor.fetchone() != None
 
+def db_get_user_id(username):
+    g.cursor.execute('SELECT (rowid) FROM users WHERE username == ? LIMIT 1', [username])
+    return g.cursor.fetchone()[0]
+
+def db_get_user_email(username):
+    g.cursor.execute('SELECT (email) FROM users WHERE username == ? LIMIT 1', [username])
+    return g.cursor.fetchone()[0]
+
 def db_get_salt(username):
     """Return the salt associated with the specified username."""
     g.cursor.execute('SELECT (salt) FROM users WHERE username == ?', [username])

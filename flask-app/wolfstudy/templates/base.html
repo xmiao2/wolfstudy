@@ -21,15 +21,34 @@
         <header>
             <h1 id="logo"><a href="/">WolfStudy</a></h1>
 
+            {% if session.logged_in %}
+                <p id="login-message">Logged in as {{ session.username }}</p>
+            {% endif %}
+
             <nav>
                 <ul>
                     <li><a href="/feed">Feed</a></li>
                     <li><a href="/ask">Ask</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Register</a></li>
+
+                    {% if session.logged_in %}
+                        <li><a href="/logout">Log out</a></li>
+                    {% else %}
+                        <li><a href="/login">Log in</a></li>
+                        <li><a href="/register">Register</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
         <div id="content">
             {% block content %}{% endblock %}
