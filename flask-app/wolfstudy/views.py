@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, request, session, url_for
+from flask import abort, flash, redirect, render_template, request, session, url_for
 
 from wolfstudy import app
 import auth
@@ -90,3 +90,13 @@ def logout():
     session.pop('username')
 
     return redirect(url_for('index'))
+
+@app.route('/user/<username>')
+def show_user(username):
+    if not db.db_username_exists(username):
+        abort(404)
+
+    email = db.db_get_user_email(username)
+    id = db.db_get_user_id(username)
+
+    return render_template('user.html', username=username, email=email, id=id)
