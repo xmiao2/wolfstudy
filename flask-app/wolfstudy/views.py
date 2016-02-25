@@ -5,10 +5,9 @@ import auth
 import db
 
 @app.route('/')
-@app.route('/feed/')
-def feed():
+def index():
     questions = db.db_get_all_questions()
-    return render_template('feed.html', questions=questions)
+    return render_template('index.html', questions=questions)
 
 @app.route('/question/<int:question_id>/')
 def get_question(question_id):
@@ -55,10 +54,11 @@ def register():
 
         auth.register_user(email, username, password)
 
+        session['logged_in'] = True
         session['username'] = username
 
         # Redirect to homepage
-        return redirect(url_for('feed'))
+        return redirect(url_for('index'))
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -73,6 +73,14 @@ def login():
             error = 'Login failed. Please try again.'
             return render_template('login.html', error=error)
 
+        session['logged_in'] = True
         session['username'] = username
 
-        return redirect(url_for('feed'))
+        return redirect(url_for('index'))
+
+@app.route('/logout/')
+def logout():
+    session['logged_in'] = False
+    session.pop('username')
+
+    return redirect(url_for('index'))

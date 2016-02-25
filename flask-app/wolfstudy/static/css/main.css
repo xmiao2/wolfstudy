@@ -6,6 +6,13 @@ header {
     overflow: hidden;
 }
 
+header #login-message {
+    color: white;
+    font-style: italic;
+    display: inline-block;
+    margin-left: 15px;
+}
+
 header #logo,
 header #logo a:link,
 header #logo a:visited,
