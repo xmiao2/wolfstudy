@@ -15,11 +15,15 @@
 
     <hr>
 
-    <form action="/question/{{ question_id }}/answer/" method="post">
-        <label for="content">Answer this question:</label>
-        <textarea id="content" name="content"></textarea>
-        <br>
+    {% if session.logged_in %}
+        <form action="/question/{{ question_id }}/answer/" method="post">
+            <label for="content">Answer this question:</label>
+            <textarea id="content" name="content"></textarea>
+            <br>
 
-        <button type="submit">Submit</button>
-    </form>
+            <button type="submit">Submit</button>
+        </form>
+    {% else %}
+        <p><a href="/login">Log in</a> or <a href="/register">register</a> to answer this question.</p>
+    {% endif %}
 {% endblock %}
