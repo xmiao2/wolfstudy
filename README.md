@@ -6,24 +6,16 @@ This is the Git repository for WolfStudy, an open question and answer site for s
 Running the development server
 ------------------------------
 
-1. Activate the `virtualenv`: `$ . flask/bin/activate`.
-2. Edit code.
-3. Run code: `$ python2 app.py`.
-4. When you're done working, run `$ deactivate`.
+0. Create the `virtualenv`: `$ virtualenv venv`.
+2. Activate the `virtualenv`: `$ . venv/bin/activate`.
+1. Install the requirements: `$ venv/bin/pip install -r requirements.txt`.
+3. Edit code.
+4. Run the application: `$ venv/bin/python runserver.py`.
+5. When you're done working, run `$ deactivate`.
 
-To do
------
+Deploying to Heroku
+-------------------
 
-- Start unit testing
-- Paginate the feed
-- Make it look good
-- Figure out how to deploy the thing
-- Add comments to both questions and answers
-- Figure out our GitHub workflow (maybe meetings are a good idea)
+Run `$ git push heroku master` to deploy from master.
 
-Other things to consider
-------------------------
-- Users/auth
-- Editing questions and answers
-- Keeping a history of edits
-- Upvoting/downvoting
+Run `$ git push heroku <yourbranch>:master` to deploy from a different branch called `<yourbranch>`.
