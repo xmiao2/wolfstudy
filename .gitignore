@@ -2,3 +2,6 @@
 *.db
 
 flask-app/instance
+
+# Virtual environment
+venv
