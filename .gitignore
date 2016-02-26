@@ -2,4 +2,3 @@
 *.db
 
 flask-app/instance
-assets
