@@ -17,7 +17,7 @@ def get_question(question_id):
 
 @app.route('/question/<int:question_id>/answer/', methods=['POST'])
 def answer_question(question_id):
-    if not session['logged_in']:
+    if not session.get('logged_in', False):
         flash('You must be logged in to answer a question.')
         return redirect(url_for('login'))
 
@@ -26,7 +26,7 @@ def answer_question(question_id):
 
 @app.route('/ask/', methods=['GET', 'POST'])
 def ask_question():
-    if not session['logged_in']:
+    if not session.get('logged_in', False):
         flash('You must be logged in to ask a question.')
         return redirect(url_for('login'))
 
