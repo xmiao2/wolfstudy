@@ -1,1 +1,1 @@
-web: gunicorn wolfstudy:app
+web: gunicorn wolfstudy:app --log-file -
