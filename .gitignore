@@ -1,6 +1,8 @@
 *.pyc
 
-flask-app/instance
-
 # Virtual environment
-venv
+venv/
+
+instance/
+
+__pycache__/
