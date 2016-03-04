@@ -1,9 +1,9 @@
 from base64 import b64encode
 from pbkdf2 import pbkdf2_hex
+from flask import current_app
 import hashlib
 import os
 
-from wolfstudy import app
 import db
 
 def get_pass_hash(password, salt, iterations, key_length):
@@ -22,8 +22,8 @@ def register_user(email, username, password):
     salt_bytes = os.urandom(24)
     salt = b64encode(salt_bytes).decode('utf-8')
 
-    iterations = app.config['HASH_ITERATIONS']
-    key_length = app.config['KEY_LENGTH']
+    iterations = current_app.config['HASH_ITERATIONS']
+    key_length = current_app.config['KEY_LENGTH']
 
     pass_hash = get_pass_hash(password, salt, iterations, key_length)
 
@@ -41,8 +41,8 @@ def is_valid_login(username, password):
         return False
     
     salt = db.db_get_salt(username)
-    iterations = app.config['HASH_ITERATIONS']
-    key_length = app.config['KEY_LENGTH']
+    iterations = current_app.config['HASH_ITERATIONS']
+    key_length = current_app.config['KEY_LENGTH']
 
     pass_hash_attempt = get_pass_hash(password, salt, iterations, key_length)
     pass_hash_actual  = db.db_get_pass_hash(username)
