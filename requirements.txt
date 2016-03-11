@@ -1,4 +1,5 @@
 Flask==0.10.1
+Flask-Script==2.0.5
 simple-pbkdf2==1.0
 gunicorn==19.4
 pip==8.0.3
