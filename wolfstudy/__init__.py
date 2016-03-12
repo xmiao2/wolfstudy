@@ -1,12 +1,13 @@
-from contextlib import closing
-from flask import Flask, g, current_app
+from flask import Flask
 from config import config
+from flask.ext.sqlalchemy import SQLAlchemy
 
-from main import main
-
-import sqlite3
 import os
 import sys
+
+
+
+db = SQLAlchemy()
 
 
 
@@ -27,36 +28,9 @@ def create_app(config_name):
     config[config_name].init_app(app)
     install_secret_key(app)
 
-    from main import main as main_blueprint
+    db.init_app(app)
+
+    from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app
-
-
-
-def connect_db():
-    """Connect to the database specified in app.config."""
-    return sqlite3.connect(current_app.config['DATABASE'])
-
-def init_db():
-    """Create and set up the database specified in app.config."""
-    with closing(connect_db()) as db:
-        with current_app.open_resource('schema.sql', mode='r') as f:
-            schema_script = f.read()
-            db.cursor().executescript(schema_script)
-        db.commit()
-
-
-
-@main.before_request
-def before_request():
-    # Open a connection to the database and store the cursor in g.
-    g.db = connect_db()
-    g.cursor = g.db.cursor()
-
-@main.teardown_request
-def teardown_request(exception):
-    # Close the database connection.
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()

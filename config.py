@@ -4,9 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     #SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-
-    KEY_LENGTH      = 32    # The length of password hashes. Do not change this - passwords won't authenticate with different hash lengths.
-    HASH_ITERATIONS = 16384 # = 2^16. Number of hash iterations to perform when hashing a user's password.
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
     def init_app(app):
@@ -14,9 +12,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
     DATABASE = os.path.join(basedir, 'wolfstudy-dev.sqlite')
 
 class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
     DATABASE = os.path.join(basedir, 'wolfstudy.sqlite')
 
 config = {

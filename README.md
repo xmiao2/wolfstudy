@@ -7,8 +7,8 @@ Running the development server
 ------------------------------
 
 0. Create the `virtualenv`: `$ virtualenv venv`.
-2. Activate the `virtualenv`: `$ . venv/bin/activate`.
-1. Install the requirements: `$ venv/bin/pip install -r requirements.txt`.
+1. Activate the `virtualenv`: `$ . venv/bin/activate`.
+2. Install the requirements: `$ venv/bin/pip install -r requirements.txt`.
 3. Edit code.
 4. Run the application: `$ venv/bin/python runserver.py`.
 5. When you're done working, run `$ deactivate`.
