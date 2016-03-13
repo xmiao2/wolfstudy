@@ -1,57 +1,62 @@
-<!doctype html>
+{% extends "bootstrap/base.html" %}
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}WolfStudy{% endblock %}
 
-        <!-- CSS -->
-        <link href="/static/css/normalize.css" rel="stylesheet">
-        <link href="/static/css/main.css" rel="stylesheet">
+{% block head %}
+    {{ super() }}
 
-        <!-- JavaScript -->
-        <script src="/static/js/main.js" async></script>
+    <meta name="description" content="">
 
-        <title>WolfStudy</title>
-    </head>
+    <!-- CSS -->
+    <link href="/static/css/normalize.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
 
-    <body>
-        <header>
-            <h1 id="logo"><a href="/">WolfStudy</a></h1>
+    <!-- JavaScript -->
+    <script src="/static/js/main.js" async></script>
+{% endblock %}
 
-            {% if session.logged_in %}
-                <p id="login-message">Logged in as {{ session.username }}</p>
-            {% endif %}
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
 
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/ask">Ask</a></li>
+{% block content %}
+    <header>
+        <h1 id="logo"><a href="/">WolfStudy</a></h1>
 
-                    {% if session.logged_in %}
-                        <li><a href="/logout">Log out</a></li>
-                    {% else %}
-                        <li><a href="/login">Log in</a></li>
-                        <li><a href="/register">Register</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </header>
+        {% if session.logged_in %}
+            <p id="login-message">Logged in as {{ session.username }}</p>
+        {% endif %}
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/ask">Ask</a></li>
 
-        <div id="content">
-            {% block content %}{% endblock %}
-        </div>
-    </body>
-</html>
+                {% if session.logged_in %}
+                    <li><a href="/logout">Log out</a></li>
+                {% else %}
+                    <li><a href="/login">Log in</a></li>
+                    <li><a href="/register">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div id="content">
+        {% block page_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
