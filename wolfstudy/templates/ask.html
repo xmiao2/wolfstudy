@@ -1,17 +1,8 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
     <h2>Ask a question</h2>
 
-    <form action="/ask/" method="post">
-        <label for="title">Question title:</label>
-        <input type="text" id="title" name="title">
-        <br>
-
-        <label for="content">Content:</label>
-        <textarea id="content" name="content"></textarea>
-        <br>
-
-        <button type="submit">Submit</button>
-    </form>
+    {{ wtf.quick_form(form) }}
 {% endblock %}

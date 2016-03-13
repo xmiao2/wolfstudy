@@ -1,6 +1,7 @@
 from flask import abort, flash, redirect, render_template, request, session, url_for
 from . import main
 from .. import db
+from .forms import AnswerQuestionForm, AskQuestionForm, LoginForm, RegisterForm
 from ..models import Answer, Question, User
 
 @main.route('/')
@@ -12,7 +13,8 @@ def index():
 def get_question(question_id):
     question = Question.query.filter_by(id=question_id).first_or_404()
     answers = question.answers
-    return render_template('question.html', question=question, answers=answers)
+    form = AnswerQuestionForm()
+    return render_template('question.html', question=question, answers=answers, form=form)
 
 @main.route('/question/<int:question_id>/answer/', methods=['POST'])
 def answer_question(question_id):
@@ -20,14 +22,16 @@ def answer_question(question_id):
         flash('You must be logged in to answer a question.')
         return redirect(url_for('.login'))
 
-    question = Question.query.filter_by(id=question_id).first_or_404()
-    content = request.form['content']
-    new_answer = Answer(content, question)
+    form = AnswerQuestionForm()
+    if form.validate_on_submit():
+        question = Question.query.filter_by(id=question_id).first_or_404()
+        content = form.content.data
+        new_answer = Answer(content, question)
 
-    db.session.add(new_answer)
-    db.session.commit()
+        db.session.add(new_answer)
+        db.session.commit()
 
-    return redirect(url_for('.get_question', question_id=question_id))
+        return redirect(url_for('.get_question', question_id=question_id))
 
 @main.route('/ask/', methods=['GET', 'POST'])
 def ask_question():
@@ -35,24 +39,23 @@ def ask_question():
         flash('You must be logged in to ask a question.')
         return redirect(url_for('.login'))
 
-    if request.method == 'GET':
-        return render_template('ask.html')
-
-    elif request.method == 'POST':
-        new_question = Question(request.form['title'], request.form['content'])
+    form = AskQuestionForm()
+    if form.validate_on_submit():
+        new_question = Question(form.title.data, form.content.data)
         db.session.add(new_question)
         db.session.commit()
         return redirect(url_for('.get_question', question_id=new_question.id))
+    else:
+        return render_template('ask.html', form=form)
 
 @main.route('/register/', methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('register.html')
-    elif request.method == 'POST':
-        email    = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
-        password_retype = request.form['password-retype']
+    form = RegisterForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        username = form.username.data
+        password = form.password.data
+        password_retype = form.password_retype.data
 
         error = None
         if User.query.filter_by(username=username).first() != None:
@@ -73,25 +76,28 @@ def register():
         session['username'] = username
 
         return redirect(url_for('.index'))
+    else:
+        return render_template('register.html', form=form)
 
 @main.route('/login/', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    elif request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
 
         user = User.query.filter_by(username=username).first()
         
         if user == None or not user.verify_password(password):
             error = 'Login failed. Please try again.'
-            return render_template('login.html', error=error)
+            return render_template('login.html', form=form, error=error)
 
         session['logged_in'] = True
         session['username'] = username
 
         return redirect(url_for('.index'))
+    else:
+        return render_template('login.html', form=form)
 
 @main.route('/logout/')
 def logout():
