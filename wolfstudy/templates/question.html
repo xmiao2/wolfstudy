@@ -1,28 +1,24 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %}
-    <h2>{{ title }}</h2>
+{% block page_content %}
+    <h2>{{ question.title }}</h2>
 
-    <p>{{ content }}</p>
+    <p>{{ question.content }}</p>
 
     <hr>
 
     <h2>Answers:</h2>
 
     {% for answer in answers %}
-        <p>{{ answer }}</p>
+        <p>{{ answer.content }}</p>
     {% endfor %}
 
     <hr>
 
     {% if session.logged_in %}
-        <form action="/question/{{ question_id }}/answer/" method="post">
-            <label for="content">Answer this question:</label>
-            <textarea id="content" name="content"></textarea>
-            <br>
-
-            <button type="submit">Submit</button>
-        </form>
+        {% set action %}/question/{{ question.id }}/answer/{% endset %}
+        {{ wtf.quick_form(form, action=action) }}
     {% else %}
         <p><a href="/login">Log in</a> or <a href="/register">register</a> to answer this question.</p>
     {% endif %}

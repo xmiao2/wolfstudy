@@ -1,1 +1,1 @@
-web: gunicorn wolfstudy:app --log-file -
+web: gunicorn manage:app

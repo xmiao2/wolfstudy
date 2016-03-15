@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <p>Username: {{ username }}</p>
-    <p>Email: {{ email }}</p>
-    <p>ID: {{ id }}</p>
+{% block page_content %}
+    <p>Username: {{ user.username }}</p>
+    <p>Email address: {{ user.email }}</p>
 {% endblock %}

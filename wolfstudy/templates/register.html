@@ -1,29 +1,12 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %}
+{% block page_content %}
     <h1>Register</h1>
 
     {% if error is defined %}
         <p>{{ error }}</p>
     {% endif %}
 
-    <form action="/register/" method="post">
-        <label for="email">Email address:</label>
-        <input type="text" id="email" name="email" required>
-        <br>
-
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-
-        <label for="password-retype">Re-type your password:</label>
-        <input type="password" id="password-retype" name="password-retype" required>
-        <br>
-
-        <button type="submit">Register</button>
-    </form>
+    {{ wtf.quick_form(form) }}
 {% endblock %}

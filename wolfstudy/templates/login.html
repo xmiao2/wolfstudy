@@ -1,21 +1,12 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %}
+{% block page_content %}
     <h1>Log in:</h1>
 
     {% if error is defined %}
         <p>{{ error }}</p>
     {% endif %}
 
-    <form action="/login/" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
-        <br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
-        <br>
-
-        <button type="submit">Log in</button>
-    </form>
+    {{ wtf.quick_form(form) }}
 {% endblock %}
