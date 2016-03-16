@@ -20,6 +20,6 @@
         {% set action %}/question/{{ question.id }}/answer/{% endset %}
         {{ wtf.quick_form(form, action=action) }}
     {% else %}
-        <p><a href="/login">Log in</a> or <a href="/register">register</a> to answer this question.</p>
+        <p><a href="/login/">Log in</a> or <a href="/register/">register</a> to answer this question.</p>
     {% endif %}
 {% endblock %}
