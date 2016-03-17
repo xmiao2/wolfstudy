@@ -20,39 +20,52 @@
 {% endblock %}
 
 {% block content %}
-    <header>
-        <h1 id="logo"><a href="/">WolfStudy</a></h1>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse-content" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">WolfStudy</a>
+            </div>
 
-        {% if session.logged_in %}
-            <p id="login-message">Logged in as {{ session.username }}</p>
-        {% endif %}
-
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/ask/">Ask</a></li>
-
+            <!-- Things to be collapsed in the header -->
+            <div class="collapse navbar-collapse" id="header-collapse-content">
                 {% if session.logged_in %}
-                    <li><a href="/logout/">Log out</a></li>
-                {% else %}
-                    <li><a href="/login/">Log in</a></li>
-                    <li><a href="/register/">Register</a></li>
+                    <p class="navbar-text">Logged in as {{ session.username }}</p>
                 {% endif %}
-            </ul>
-        </nav>
-    </header>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/ask/">Ask</a></li>
+
+                    {% if session.logged_in %}
+                        <li><a href="/logout/">Log out</a></li>
+                    {% else %}
+                        <li><a href="/login/">Log in</a></li>
+                        <li><a href="/register/">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <ul class="flashes">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+            <div class="container">
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
     {% endwith %}
 
-    <div id="content">
+    <div class="container">
         {% block page_content %}{% endblock %}
     </div>
 {% endblock %}
