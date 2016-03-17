@@ -1,8 +1,10 @@
+/*
 header {
     background-color: #333333;
 
     /* This makes the header's height expand to the
      * height of its floated children. */
+/*
     overflow: hidden;
 }
 
@@ -55,3 +57,4 @@ header nav a:hover {
 #content {
     clear: both;
 }
+*/

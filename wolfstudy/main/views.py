@@ -19,6 +19,7 @@ def get_question(question_id):
 @main.route('/question/<int:question_id>/answer/', methods=['POST'])
 def answer_question(question_id):
     if not session.get('logged_in', False):
+        print "not logged in"
         flash('You must be logged in to answer a question.')
         return redirect(url_for('.login'))
 
@@ -31,7 +32,11 @@ def answer_question(question_id):
         db.session.add(new_answer)
         db.session.commit()
 
-        return redirect(url_for('.get_question', question_id=question_id))
+        return redirect(url_for('.get_question', question_id=question.id))
+    else:
+        question = Question.query.filter_by(id=question_id).first_or_404()
+        answers = question.answers
+        return render_template('question.html', question=question, answers = answers, form=form)
 
 @main.route('/ask/', methods=['GET', 'POST'])
 def ask_question():
