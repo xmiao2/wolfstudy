@@ -2,6 +2,7 @@ from config import config
 from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.wtf.csrf import CsrfProtect
 
 import errno
 import os
@@ -48,6 +49,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     install_secret_key(app)
+    CsrfProtect(app)
 
     bootstrap.init_app(app)
     db.init_app(app)
