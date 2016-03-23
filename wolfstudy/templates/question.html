@@ -16,7 +16,7 @@
 
     <hr>
 
-    {% if session.logged_in %}
+    {% if current_user.is_authenticated %}
         {% set action %}{{ url_for('main.answer_question', question_id=question.id) }}{% endset %}
         {{ wtf.quick_form(form, action=action) }}
     {% else %}

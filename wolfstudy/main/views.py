@@ -1,4 +1,5 @@
 from flask import flash, redirect, render_template, session, url_for
+from flask.ext.login import login_required
 from . import main
 from .. import db
 from .forms import AnswerQuestionForm, AskQuestionForm
@@ -17,11 +18,8 @@ def get_question(question_id):
     return render_template('question.html', question=question, answers=answers, form=form)
 
 @main.route('/question/<int:question_id>/answer/', methods=['POST'])
+@login_required
 def answer_question(question_id):
-    if not session.get('logged_in', False):
-        flash('You must be logged in to answer a question.')
-        return redirect(url_for('auth.login'))
-
     form = AnswerQuestionForm()
     if form.validate_on_submit():
         question = Question.query.filter_by(id=question_id).first_or_404()
@@ -38,11 +36,8 @@ def answer_question(question_id):
         return render_template('question.html', question=question, answers = answers, form=form)
 
 @main.route('/ask/', methods=['GET', 'POST'])
+@login_required
 def ask_question():
-    if not session.get('logged_in', False):
-        flash('You must be logged in to ask a question.')
-        return redirect(url_for('auth.login'))
-
     form = AskQuestionForm()
     if form.validate_on_submit():
         new_question = Question(form.title.data, form.content.data)

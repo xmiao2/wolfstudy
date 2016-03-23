@@ -1,4 +1,5 @@
-from flask import redirect, render_template, session, url_for
+from flask import flash, redirect, render_template, request, session, url_for
+from flask.ext.login import login_required, login_user, logout_user
 from . import auth
 from .. import db
 from .forms import LoginForm, RegisterForm
@@ -22,14 +23,14 @@ def register():
             error = 'The passwords you typed did not match.'
 
         if error:
-            return render_template('auth/register.html', error=error)
+            flash(error)
+            return render_template('auth/register.html', form=form)
 
         new_user = User(username, email, password)
         db.session.add(new_user)
         db.session.commit()
 
-        session['logged_in'] = True
-        session['username'] = username
+        login_user(new_user)
 
         return redirect(url_for('main.index'))
     else:
@@ -44,20 +45,17 @@ def login():
 
         user = User.query.filter_by(username=username).first()
         
-        if user == None or not user.verify_password(password):
-            error = 'Login failed. Please try again.'
-            return render_template('auth/login.html', form=form, error=error)
-
-        session['logged_in'] = True
-        session['username'] = username
-
-        return redirect(url_for('main.index'))
-    else:
-        return render_template('auth/login.html', form=form)
+        if user != None and user.verify_password(password):
+            login_user(user)
+            return redirect(request.args.get('next') or url_for('main.index'))
+        else:
+            flash('Login failed. Please try again.')
+    return render_template('auth/login.html', form=form)
 
 @auth.route('/logout/')
+@login_required
 def logout():
-    session['logged_in'] = False
-    session.pop('username')
+    logout_user()
+    flash('You have been logged out.')
 
     return redirect(url_for('main.index'))

@@ -1,5 +1,6 @@
-from . import db
+from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from . import db, login_manager
 
 MAX_QUESTION_TITLE_LENGTH = 200
 MAX_USERNAME_LENGTH = 30
@@ -34,10 +35,11 @@ class Answer(db.Model):
         self.question_id = question.id
         self.question = question
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
-    username = db.Column(db.String(MAX_USERNAME_LENGTH), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(MAX_USERNAME_LENGTH))
     email = db.Column(db.String(MAX_EMAIL_LENGTH), unique=True)
     password_hash = db.Column(db.String(HASH_LENGTH))
 
@@ -50,3 +52,7 @@ class User(db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
