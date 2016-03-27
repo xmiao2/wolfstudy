@@ -1,0 +1,10 @@
+Hello {{ user.username }},
+
+Welcome to WolfStudy! Please confirm your account by clicking on this link:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Thanks,
+The WolfStudy Team
+
+Note: please do not reply to this message.
