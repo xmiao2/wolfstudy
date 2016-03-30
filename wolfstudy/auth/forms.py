@@ -25,3 +25,18 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[Required()])
 
     log_in = SubmitField('Log In')
+
+class PasswordResetRequestForm(Form):
+    email = EmailField('Email address', validators=[Required(), Length(min=6, max=320)])
+    submit = SubmitField('Reset password')
+
+class PasswordResetForm(Form):
+    email = EmailField('Email address', validators=[Required(), Length(min=6, max=320)])
+    password = PasswordField('Password', validators=[Required(), EqualTo('password_retype', message='Passwords must match.')])
+    password_retype = PasswordField('Re-type your password', validators=[Required(), EqualTo('password_retype', message='Passwords must match.')])
+
+    submit = SubmitField('Reset password')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first() is None:
+            raise ValidationError('Unknown email address.')

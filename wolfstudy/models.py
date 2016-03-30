@@ -46,12 +46,19 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(HASH_LENGTH))
     confirmed = db.Column(db.Boolean, default=False)
 
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+
+    @password.setter
+    def password(self, password):
+        method = 'pbkdf2:sha1:' + str(HASH_ITERATIONS)
+        self.password_hash = generate_password_hash(password, method=method, salt_length=SALT_LENGTH)
+
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
-
-        method = 'pbkdf2:sha1:' + str(HASH_ITERATIONS)
-        self.password_hash = generate_password_hash(password, method=method, salt_length=SALT_LENGTH)
+        self.password = password
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -69,6 +76,22 @@ class User(UserMixin, db.Model):
         if data.get('confirm') != self.id:
             return False
         self.confirmed = True
+        db.session.add(self)
+        return True
+
+    def generate_reset_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id})
+
+    def reset_password(self, token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('reset') != self.id:
+            return False
+        self.password = new_password
         db.session.add(self)
         return True
 

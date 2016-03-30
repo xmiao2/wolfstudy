@@ -8,4 +8,6 @@
     <p><a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
 
     {{ wtf.quick_form(form) }}
+
+    <p>Forgot your password? <a href="{{ url_for('auth.password_reset_request') }}">Click here to reset it.</a></p>
 {% endblock %}
