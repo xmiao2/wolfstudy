@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, ValidationError
 from wtforms.validators import EqualTo, Length, Required
 from wtforms.fields.html5 import EmailField
 from ..models import User
@@ -23,6 +23,7 @@ class RegisterForm(Form):
 class LoginForm(Form):
     username = StringField('Username', validators=[Required(), Length(min=4, max=30)])
     password = PasswordField('Password', validators=[Required()])
+    remember_me = BooleanField('Keep me logged in')
 
     log_in = SubmitField('Log In')
 

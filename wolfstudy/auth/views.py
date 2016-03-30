@@ -65,11 +65,12 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
+        remember_me = form.remember_me.data
 
         user = User.query.filter_by(username=username).first()
         
         if user != None and user.verify_password(password):
-            login_user(user)
+            login_user(user, remember_me)
             return redirect(request.args.get('next') or url_for('main.index'))
         else:
             flash('Login failed. Please try again.')
