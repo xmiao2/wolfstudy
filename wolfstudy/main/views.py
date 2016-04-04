@@ -115,3 +115,15 @@ def logout():
 def show_user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user=user)
+
+@main.app_errorhandler(400)
+def page_not_found(error):
+    return render_template('400.html'), 400
+
+@main.app_errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+@main.app_errorhandler(500)
+def page_not_found(error):
+    return render_template('500.html'), 500
