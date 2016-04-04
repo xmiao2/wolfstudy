@@ -16,7 +16,7 @@ Running the development server
 Common Problem
 --------------
 
-- On first run, if you see 500 errors stating that tables cannot be found. Run `$ python2 manage.py db downgrade` then `$ python2 manage.py db upgrade` (This will no longer be necessary once db is migrated to PostgreSQL).
+- On first run, if you see 500 errors stating that tables cannot be found, run `$ python2 manage.py db downgrade` then `$ python2 manage.py db upgrade` (This will no longer be necessary once db is migrated to PostgreSQL).
 
 Deploying to Heroku
 -------------------
