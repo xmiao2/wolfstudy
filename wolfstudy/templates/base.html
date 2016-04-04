@@ -8,8 +8,9 @@
     <meta name="description" content="">
 
     <!-- CSS -->
-    <link href="/static/css/normalize.css" rel="stylesheet">
-    <link href="/static/css/main.css" rel="stylesheet">
+    {% assets "common_css" %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
 
     <!-- JavaScript -->
     <script src="/static/js/main.js" async></script>

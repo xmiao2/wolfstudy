@@ -4,6 +4,8 @@ Flask-Migrate==1.8.0
 Flask-SQLAlchemy==2.1
 Flask-Script==2.0.5
 Flask-WTF==0.9.5
+Flask-Assets=0.11.1
+cssmin==0.2.0
 simple-pbkdf2==1.0
 gunicorn==19.4
 pip==8.1.0
