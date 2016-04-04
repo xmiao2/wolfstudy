@@ -3,11 +3,13 @@ from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf.csrf import CsrfProtect
+from flask_assets import Environment
+from webassets.loaders import PythonLoader as PythonAssetsLoader
 
 import errno
 import os
 import sys
-
+import assets
 
 
 bootstrap = Bootstrap()
@@ -53,6 +55,12 @@ def create_app(config_name):
 
     bootstrap.init_app(app)
     db.init_app(app)
+
+    # Initialize flask assets
+    assets_env = Environment(app)
+    assets_loader = PythonAssetsLoader(assets)
+    for name, bundle in assets_loader.load_bundles().iteritems():
+        assets_env.register(name, bundle)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
